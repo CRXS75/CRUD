@@ -1,0 +1,14 @@
+- model_class = Article
+.page-header
+  %h1=t '.title', :default => @article.title.titleize
+
+%p
+  = @article.content
+  %hr
+  %strong= "Ecrit le " + @article.created_at.to_formatted_s(:short) + " par " + @article.user.username
+
+
+= link_to t('.back', :default => t("Retour")), articles_path, :class => 'btn btn-default'
+- if @article.user_id.eql?(current_user.id)
+  = link_to t('.edit', :default => t("Modifier")), edit_article_path(@article), :class => 'btn btn-default'
+  = link_to 'Supprimer', { :action => 'newdestroy', :id => @article.id }, :class => 'btn btn-danger'

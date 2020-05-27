@@ -1,0 +1,18 @@
+%h1 Login
+
+.container
+  = form_for(:session, :url => sessions_path) do |f|
+    .field
+      = f.label "Email"
+      = f.text_field :login
+
+    .field
+      = f.label "Mot de passe"
+      = f.password_field :password
+
+    .form-group
+      = f.submit "Connexion", class: 'btn btn-primary'
+
+  = link_to 'Créer un compte', "users/new"
+
+  = link_to 'Register with Linkedin', '/auth/linkedin'

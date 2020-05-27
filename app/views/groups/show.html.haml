@@ -1,0 +1,26 @@
+- model_class = Group
+.page-header
+  %h1=t '.title', :default => @group.name.titleize
+
+.container
+  = link_to t('.back', :default => t("helpers.links.back")), groups_path, :class => 'btn btn-default'
+
+  - if current_user
+    - if @group.owner_id.eql?(current_user.id)
+      = link_to t('.edit', :default => t("helpers.links.edit")), edit_group_path(@group), :class => 'btn btn-default'
+      = link_to "Supprimer", { :action => 'newdestroy', :id => @group.id }, :class => 'btn btn-danger'
+    - else
+      - if @group.users.include?(current_user)
+        = link_to "Quitter", { :action => 'quit', :group_id => @group.id }, :class => 'btn btn-default'
+      - else
+        = link_to "Joindre", { :action => 'join', :group_id => @group.id }, :class => 'btn btn-default'
+%hr
+
+%table.table.table-striped
+  %h3 Liste des membres
+  %tbody
+    - @group.users.each do |user|
+      %tr
+        .container
+          .row
+            = link_to user.username, user_path(:id => user.id)

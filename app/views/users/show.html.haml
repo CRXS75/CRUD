@@ -1,0 +1,14 @@
+.container
+
+  %p#notice= notice
+
+  %p
+    %b Username:
+    = @user.username
+
+  %p
+    %b Email:
+    = @user.email
+
+  - if !current_user.nil? && @user.identical?.eql?(current_user.id)
+    = link_to 'Edit', edit_user_path(@user)

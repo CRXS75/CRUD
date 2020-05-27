@@ -1,0 +1,27 @@
+- model_class = Group
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+- if current_user
+  = link_to t('.new', :default => t("helpers.links.new")), new_group_path, :class => 'btn btn-primary'
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:name)
+      %th= model_class.human_attribute_name(:created_at)
+      %th=t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @groups.each do |group|
+      %tr
+        %td= group.name
+        %td=l group.created_at
+        %td
+          = link_to t('.show', :default => t("helpers.links.show")), group_path(group), :class => 'btn btn-default btn-xs'
+          - if current_user
+            - if group.owner_id.eql?(current_user.id)
+              = link_to t('.edit', :default => t("helpers.links.edit")), edit_group_path(group), :class => 'btn btn-default btn-xs'
+              = link_to "Supprimer", { :action => 'newdestroy', :id => group.id }, :class => 'btn btn-xs btn-danger'
+            - else
+              - if group.users.include?(current_user)
+                = link_to "Quitter",  { :action => 'quit', :group_id => group.id }, :class => 'btn btn-default btn-xs'
+              - else
+                = link_to "Joindre", { :action => 'join', :group_id => group.id }, :class => 'btn btn-default btn-xs'
